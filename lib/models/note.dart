@@ -10,4 +10,6 @@ class Note {
   String? title;
   String? content;
   DateTime? createdAt;
+   @Index() // Thêm Index để filter nhanh hơn
+  bool isFavorite = false; 
 }

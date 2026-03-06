@@ -1,54 +1,44 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:notes_app/widgets/list_note.dart';
-import 'package:notes_app/widgets/text_field_search.dart';
+import 'package:go_router/go_router.dart';
+import 'package:notes_app/core/themes/app_colors.dart';
 
 class HomePage extends ConsumerWidget {
-  const HomePage({super.key});
+  const HomePage({
+    required this.navigationShell,
+    super.key,
+  });
+
+  final StatefulNavigationShell navigationShell;
 
   @override
-  Widget build(BuildContext context, ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Ghi chú',
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 28),
-        ),
-        centerTitle: false,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.more_horiz,
-                color: Colors.grey[700],
-              ))
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      color: context.scaffoldBackgroundColor,
+      child: Column(
+        children: [
+          Expanded(child: navigationShell),
+          CupertinoTabBar(
+            currentIndex: navigationShell.currentIndex,
+            onTap: (index) => navigationShell.goBranch(index),
+            backgroundColor: context.scaffoldBackgroundColor.withOpacity(0.8),
+            activeColor: context.primaryColor,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.home),
+                label: 'Ghi chú',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.star_fill),
+                label: 'Quan Trọng',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.settings),
+                label: 'Cài đặt',
+              ),
+            ],
+          ),
         ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            TextFieldSearch(),
-            const SizedBox(height: 16),
-            ListNote(
-              title: 'Title',
-              content: 'Content',
-            ),
-            ListNote(
-              title: 'Title',
-              content: 'Content',
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () {},
-        child: Icon(
-          Icons.edit_calendar_outlined,
-          color:  Colors.grey[700],
-        ),
       ),
     );
   }
